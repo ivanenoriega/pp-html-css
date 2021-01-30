@@ -1,7 +1,15 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
+import auth0 from "./api/utils/auth0";
 
-export default function Home() {
+export async function getServerSideProps(context) {
+  const session = await auth0.getSession(context.req);
+  return {
+    props: { user: session?.user || null }, // will be passed to the page component as props
+  };
+}
+
+export default function Home({ user }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -14,8 +22,14 @@ export default function Home() {
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
+        {user ? (
+          <a href="/api/logout">logout</a>
+        ) : (
+          <a href="/api/login">login</a>
+        )}
+
         <p className={styles.description}>
-          Get started by editing{' '}
+          Get started by editing{" "}
           <code className={styles.code}>pages/index.js</code>
         </p>
 
@@ -56,10 +70,10 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
         </a>
       </footer>
     </div>
-  )
+  );
 }
