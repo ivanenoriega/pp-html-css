@@ -6,7 +6,9 @@ export async function getServerSideProps(context) {
   const session = await auth0.getSession(context.req);
 
   if (!session || !session?.user) {
-    return {};
+    return {
+      props: {},
+    };
   }
 
   return {
