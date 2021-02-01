@@ -1,6 +1,10 @@
+import PropTypes from 'prop-types';
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import { Container, Card } from 'semantic-ui-react';
 import auth0 from './api/utils/auth0';
+import NavBar from '../components/navbar';
+import CategoryCard from '../components/category/card';
+import { getCategories } from '../content/exercises';
 
 export async function getServerSideProps(context) {
   const session = await auth0.getSession(context.req);
@@ -14,23 +18,49 @@ export async function getServerSideProps(context) {
     };
   }
 
+  // TODO: Calculate percentage
+  // TODO: Define buttontext
+  // TODO: Define href
+  const categories = getCategories();
+
   return {
-    props: { user: session?.user || null },
+    props: { user: session?.user || null, categories },
   };
 }
 
-export default function Home() {
+export default function Home({ categories }) {
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <title>Practice Platform: Home</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>Practice Platform: Home</h1>
-        <a href="/api/logout">Logout</a>
-      </main>
-    </div>
+      <NavBar active="home" />
+      <Container className="home">
+        <Card.Group>
+          {categories.map((category) => (
+            <CategoryCard
+              title={category.title}
+              description={category.description}
+              buttontext={category.buttontext}
+              href={category.href}
+              percent={category.percent}
+            />
+          ))}
+        </Card.Group>
+      </Container>
+    </>
   );
 }
+
+Home.propTypes = {
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+      description: PropTypes.string,
+      buttontext: PropTypes.string,
+      href: PropTypes.string,
+      percent: PropTypes.string,
+    }),
+  ).isRequired,
+};
