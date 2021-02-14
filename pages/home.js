@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import Head from 'next/head';
-import { Container, Card } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import auth0 from './api/utils/auth0';
 import NavBar from '../components/navbar';
-import CategoryCard from '../components/category/card';
+import CategoryCards from '../components/category/cards';
 import { getCategories } from '../content/exercises';
 
 export async function getServerSideProps(context) {
@@ -18,10 +18,10 @@ export async function getServerSideProps(context) {
     };
   }
 
+  const categories = getCategories();
   // TODO: Calculate percentage
   // TODO: Define buttontext
   // TODO: Define href
-  const categories = getCategories();
 
   return {
     props: { user: session?.user || null, categories },
@@ -37,17 +37,7 @@ export default function Home({ categories }) {
       </Head>
       <NavBar active="home" />
       <Container className="home">
-        <Card.Group>
-          {categories.map((category) => (
-            <CategoryCard
-              title={category.title}
-              description={category.description}
-              buttontext={category.buttontext}
-              href={category.href}
-              percent={category.percent}
-            />
-          ))}
-        </Card.Group>
+        <CategoryCards categories={categories} />
       </Container>
     </>
   );
