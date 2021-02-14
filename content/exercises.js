@@ -7,7 +7,26 @@ const exercises = {
         id: 'basic_structure',
         name: 'Estructura HTML',
         description: 'Completa el codigo arrastrando los valores correctos en los espacios vacios',
-        type: 'complete',
+        type: 'drag_n_drop',
+        task: `<!DOCTYPE html>
+        <$input_c>
+            <head>
+            </$input_c>
+            <$input_c>
+            
+            <h1>My First Heading</h1>
+            <p>My first paragraph.</p>
+            
+            </body>
+        </html>`,
+        options: ['head', 'header', 'body', 'cuerpo', 'html', 'main'],
+        solution: ['html', 'head', 'body'],
+      },
+      {
+        id: 'basic_structure_v2',
+        name: 'Estructura HTML V2',
+        description: 'Completa el codigo arrastrando los valores correctos en los espacios vacios',
+        type: 'drag_n_drop',
         task: `<!DOCTYPE html>
         <$input_c>
             <head>
@@ -29,15 +48,31 @@ const exercises = {
     description: 'Something about CSS.',
     tasks: [
       {
-        id: '',
-        name: '',
-        description: '',
+        id: 'basic_structure',
+        name: 'Estructura HTML',
+        description: 'Completa el codigo arrastrando los valores correctos en los espacios vacios',
+        type: 'complete',
+        task: `<!DOCTYPE html>
+        <$input_c>
+            <head>
+            </$input_c>
+            <$input_c>
+            
+            <h1>My First Heading</h1>
+            <p>My first paragraph.</p>
+            
+            </body>
+        </html>`,
+        options: ['head', 'header', 'body', 'cuerpo', 'html', 'main'],
+        solution: ['html', 'head', 'body'],
       },
     ],
   },
 };
 
 const getExercise = (category, id) => exercises[category].tasks.find((task) => task.id === id);
+
+const getExercisesFromCategory = (category) => exercises[category].tasks;
 
 const getCategories = () => {
   const categories = [];
@@ -60,4 +95,6 @@ const getCategories = () => {
   return categories;
 };
 
-export { exercises, getExercise, getCategories };
+export {
+  exercises, getExercise, getCategories, getExercisesFromCategory,
+};
